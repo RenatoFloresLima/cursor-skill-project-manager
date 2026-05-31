@@ -1,0 +1,79 @@
+{
+  "labels": [
+    {
+      "name": "epic",
+      "color": "7057FF",
+      "description": "Épico de produto — agrupa features relacionadas"
+    },
+    {
+      "name": "feature",
+      "color": "0075CA",
+      "description": "Feature — entrega de valor ao usuário"
+    },
+    {
+      "name": "task",
+      "color": "FEF2C0",
+      "description": "Task técnica — unidade de trabalho de desenvolvimento"
+    },
+    {
+      "name": "bug",
+      "color": "D73A4A",
+      "description": "Defeito — comportamento incorreto no software"
+    },
+    {
+      "name": "technical-debt",
+      "color": "C5DEF5",
+      "description": "Dívida técnica — refatoração ou melhoria estrutural"
+    },
+    {
+      "name": "high-priority",
+      "color": "B60205",
+      "description": "Prioridade alta — P0/P1, sprint atual ou blocker"
+    },
+    {
+      "name": "medium-priority",
+      "color": "FBCA04",
+      "description": "Prioridade média — P2, próximo sprint"
+    },
+    {
+      "name": "low-priority",
+      "color": "0E8A16",
+      "description": "Prioridade baixa — P3, backlog"
+    },
+    {
+      "name": "blocked",
+      "color": "000000",
+      "description": "Aguardando dependência ou decisão externa"
+    },
+    {
+      "name": "ready",
+      "color": "1D76DB",
+      "description": "Pronto para desenvolvimento — dependências satisfeitas"
+    },
+    {
+      "name": "auth",
+      "color": "5319E7",
+      "description": "Módulo — Autenticação"
+    },
+    {
+      "name": "billing",
+      "color": "006B75",
+      "description": "Módulo — Billing e pagamentos"
+    },
+    {
+      "name": "notifications",
+      "color": "E99695",
+      "description": "Módulo — Notificações"
+    },
+    {
+      "name": "admin",
+      "color": "BFD4F2",
+      "description": "Módulo — Administração"
+    },
+    {
+      "name": "infra",
+      "color": "F9D0C4",
+      "description": "Módulo — Infraestrutura e CI/CD"
+    }
+  ]
+}
