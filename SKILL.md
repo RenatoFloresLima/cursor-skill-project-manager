@@ -39,10 +39,28 @@ Ao receber um comando parcial (ex.: "crie as tasks do épico X"), aplique o work
 ## Fluxo principal
 
 ```
-PRD / Requisito → Análise → Épicos → Features → Tasks (+ Bugs + Tech Debt)
-                                                      ↓
-                              Documentação + Issues GitHub (MCP)
+PRD → Análise → Épicos → Features → Tasks (+ Bugs + Tech Debt)
+                              ↓
+                    Issues GitHub (create-github-issues)
+                              ↓
+              implement-issue: /implement-issue #N → PR → merge
 ```
+
+Após criar issues, oriente o usuário para a sub-skill **[implement-issue](implement-issue/SKILL.md)** (mesmo repositório).
+
+## Sub-skill implement-issue
+
+Local: [`implement-issue/`](implement-issue/SKILL.md)
+
+| Comando | Workflow |
+|---------|----------|
+| `/implement-issue #N` | [implement-issue/workflows/implement.md](implement-issue/workflows/implement.md) |
+| `/implement-issue test #N` | [implement-issue/workflows/test.md](implement-issue/workflows/test.md) |
+| `/implement-issue pr #N` | [implement-issue/workflows/finish.md](implement-issue/workflows/finish.md) |
+
+Instalação das duas skills: `bash scripts/install-skills.sh`
+
+---
 
 ### Passo 0 — Contexto
 
@@ -303,4 +321,5 @@ Antes de entregar, validar:
 - [config/manifest.example.json](config/manifest.example.json) — formato do manifest
 - [scripts/create-github-issues.py](scripts/create-github-issues.py) — criação em lote
 - [examples/sample-prd.md](examples/sample-prd.md) — PRD de exemplo
-- [examples/expected-output.md](examples/expected-output.md) — saída esperada completa
+- [implement-issue/SKILL.md](implement-issue/SKILL.md) — implementação de issues
+- [scripts/install-skills.sh](scripts/install-skills.sh) — instalar ambas skills no Cursor

@@ -1,14 +1,19 @@
-# project-manager — Cursor Skill
+# project-manager — Cursor Skills
 
-Skill do [Cursor](https://cursor.com) que transforma PRDs e requisitos de produto em backlog estruturado no GitHub: **Épicos → Features → Tasks**, além de Bugs e Dívida Técnica — com issues criadas automaticamente e labels padronizadas.
+Repositório de skills do [Cursor](https://cursor.com) para gestão ágil no GitHub: do **PRD ao PR mergeado**.
 
-Todo o conteúdo gerado (issues, critérios de aceite, descrições) é produzido em **português (pt-BR)**.
+Inclui duas skills:
 
-Skill complementar para **implementar** as issues: [implement-issue](../implement-issue/README.md).
+| Skill | Pasta | Função |
+|-------|-------|--------|
+| **project-manager** | `/` (raiz) | PRD → backlog → issues GitHub |
+| **implement-issue** | [`implement-issue/`](implement-issue/README.md) | Issue → branch → código → testes → PR |
+
+Todo conteúdo de work items em **português (pt-BR)**.
 
 ---
 
-## O que esta skill faz
+## O que o project-manager faz
 
 | Capacidade | Descrição |
 |------------|-----------|
@@ -16,19 +21,19 @@ Skill complementar para **implementar** as issues: [implement-issue](../implemen
 | Backlog estruturado | Decompõe requisitos em Epic → Feature → Task |
 | Critérios de aceite | Formato Given/When/Then mensurável |
 | Estimativas | Story points e complexidade XS–XL |
-| GitHub Issues | Conecta ao repo do projeto e cria issues com labels |
+| GitHub Issues | Conecta ao repo e cria issues com labels |
 | Sprint / Release | Planejamento ágil com capacidade e milestones |
+
+Para **implementar** as issues: skill [`implement-issue`](implement-issue/README.md) (mesmo repositório).
 
 ---
 
 ## Pré-requisitos
 
-- [Cursor](https://cursor.com) instalado
+- [Cursor](https://cursor.com)
 - Projeto Git com repositório no GitHub
-- [GitHub CLI (`gh`)](https://cli.github.com) — recomendado para criar issues
-- `python3` e `jq` — para scripts de bootstrap e criação em lote
-
-Autentique o GitHub CLI uma vez:
+- [GitHub CLI (`gh`)](https://cli.github.com)
+- `python3` e `jq`
 
 ```bash
 gh auth login -h github.com -p https -s repo,read:org
@@ -38,28 +43,35 @@ gh auth login -h github.com -p https -s repo,read:org
 
 ## Instalação
 
-Escolha **uma** das opções. Skills devem ficar em **`~/.cursor/skills/`** ou **`.cursor/skills/`** — nunca em `~/.cursor/skills-cursor/`.
+Skills ficam em **`~/.cursor/skills/`** ou **`.cursor/skills/`** — nunca em `~/.cursor/skills-cursor/`.
 
-### Opção A — Skill pessoal (todos os seus projetos)
+### Opção A — Pessoal (recomendado)
 
 ```bash
 git clone https://github.com/RenatoFloresLima/cursor-skill-project-manager.git \
   ~/.cursor/skills/project-manager
+
+bash ~/.cursor/skills/project-manager/scripts/install-skills.sh
 ```
+
+O script `install-skills.sh` registra **project-manager** e cria symlink **implement-issue** no Cursor.
 
 Atualizar:
 
 ```bash
 cd ~/.cursor/skills/project-manager && git pull
+bash scripts/install-skills.sh
 ```
 
-### Opção B — Skill no repositório do projeto (equipe)
+### Opção B — No repositório do projeto (equipe)
 
 ```bash
 mkdir -p .cursor/skills
 git submodule add https://github.com/RenatoFloresLima/cursor-skill-project-manager.git \
   .cursor/skills/project-manager
-git commit -m "Adiciona skill project-manager do Cursor"
+
+bash .cursor/skills/project-manager/scripts/install-skills.sh .cursor/skills
+git commit -m "Adiciona Cursor skills project-manager"
 git push
 ```
 
@@ -67,123 +79,85 @@ Colaboradores:
 
 ```bash
 git submodule update --init --recursive
+bash .cursor/skills/project-manager/scripts/install-skills.sh .cursor/skills
 ```
 
-### Opção C — Cópia direta (sem submodule)
+### Opção C — Cópia direta
 
 ```bash
-mkdir -p ~/.cursor/skills
 cp -r /caminho/para/project-manager ~/.cursor/skills/project-manager
+bash ~/.cursor/skills/project-manager/scripts/install-skills.sh
 ```
-
-Instale também **[implement-issue](../implement-issue/README.md)** para executar as tasks após criar issues.
 
 ---
 
 ## Como invocar no Cursor
 
-1. Abra a **raiz do seu projeto Git** no Cursor (onde está `.git/`), não a pasta da skill.
+1. Abra a **raiz do seu projeto Git** no Cursor (onde está `.git/`).
 2. Use o **Agent chat** (modo Agent).
-3. Invoque por comando, nome ou linguagem natural:
+3. Invoque por comando ou linguagem natural:
 
-| Forma | Exemplo |
+| Skill | Exemplo |
 |-------|---------|
-| Comando | `/project-manager analyze-prd` |
-| Nome explícito | "Use a skill project-manager" |
-| Linguagem natural | "Analise o PRD em docs/prd.md e crie issues no GitHub" |
+| project-manager | `/project-manager analyze-prd` |
+| implement-issue | `/implement-issue #110` |
 
 ---
 
-## Como usar em um projeto Git
+## Como usar — Fase 1: Backlog
 
 ### 1. Abra o projeto no Cursor
 
-Abra a pasta raiz do repositório Git (onde existe `.git/` e `origin` apontando para o GitHub).
+Pasta raiz do repositório Git (`origin` no GitHub).
 
-### 2. Verifique a conexão com o GitHub
-
-No terminal do projeto:
+### 2. Verifique GitHub
 
 ```bash
 bash .cursor/skills/project-manager/scripts/verify-github.sh
 ```
 
-O script detecta `owner/repo` a partir de `git remote get-url origin`.
-
-Se falhar: `gh auth login`
-
 ### 3. Analise o PRD
-
-No chat:
 
 ```
 /project-manager analyze-prd
 ```
 
-Cole o PRD ou aponte para um arquivo (ex.: `docs/prd.md`).
+Cole o PRD ou aponte para `docs/prd.md`.
 
-### 4. Gere o backlog
+### 4. Gere backlog e issues
 
 ```
 /project-manager create-backlog
-```
-
-O agente produz épicos, features, tasks, bugs e dívida técnica em português.
-
-### 5. Conecte ao GitHub e crie as issues
-
-```
 /project-manager connect-github
 /project-manager create-github-issues
 ```
 
-Fluxo executado pelo agente:
-
-1. Valida autenticação (`verify-github.sh`)
-2. Cria labels padronizadas (`bootstrap-labels.sh`)
-3. Gera `.project-manager/manifest.json` e corpos em `.project-manager/issues/`
-4. Publica issues no repositório (`create-github-issues.py`)
-
-Arquivos gerados **no seu projeto**:
+Arquivos gerados no **seu projeto**:
 
 ```
-seu-projeto/
-└── .project-manager/
-    ├── github-config.json
-    ├── manifest.json
-    ├── issue-map.json       # T1.1.1 → #110
-    └── issues/
-        ├── E1.md
-        └── T1.1.1.md
+seu-projeto/.project-manager/
+├── issue-map.json    # T1.1.1 → #110
+└── issues/
 ```
 
-Confirme issues criadas:
+Confirme:
 
 ```bash
 gh issue list --label task --label ready
 cat .project-manager/issue-map.json
 ```
 
-Opcional — ignore rascunhos locais:
-
-```gitignore
-.project-manager/
-```
-
-### 6. Sprint e release (opcional)
+### 5. Sprint (opcional)
 
 ```
 /project-manager sprint-planning
-/project-manager release-planning
 ```
 
-### 7. Implemente as tasks (skill implement-issue)
+---
 
-Esta skill **cria** o backlog; a execução é feita pela skill **implement-issue**.
+## Como usar — Fase 2: Implementação
 
-Instale em `~/.cursor/skills/implement-issue` ou `.cursor/skills/implement-issue`.
-
-Para cada task (use o número real de `issue-map.json` ou `gh issue list`):
+Skill **[implement-issue](implement-issue/README.md)** — já incluída neste repo.
 
 ```bash
 bash .cursor/skills/implement-issue/scripts/check-blockers.sh 110
@@ -193,39 +167,17 @@ bash .cursor/skills/implement-issue/scripts/check-blockers.sh 110
 /implement-issue #110
 ```
 
-Após o PR: `Use babysit neste PR até ficar merge-ready.`
-
-Guia completo: [implement-issue/README.md](../implement-issue/README.md)
+Após PR: `Use babysit neste PR até ficar merge-ready.`
 
 ---
 
-## Comandos disponíveis
-
-| Comando | Ação |
-|---------|------|
-| `/project-manager analyze-prd` | Analisa PRD e identifica épicos/riscos |
-| `/project-manager create-backlog` | Gera backlog completo |
-| `/project-manager create-epics` | Apenas épicos |
-| `/project-manager create-features` | Apenas features |
-| `/project-manager create-tasks` | Apenas tasks |
-| `/project-manager create-bugs` | Apenas bugs |
-| `/project-manager connect-github` | Valida repo + bootstrap de labels |
-| `/project-manager create-github-issues` | Cria issues no GitHub |
-| `/project-manager sprint-planning` | Planeja sprint com capacidade |
-| `/project-manager release-planning` | Agrupa releases/milestones |
-
----
-
-## Exemplo completo (project-manager → implement-issue)
+## Exemplo completo
 
 ```
 /project-manager analyze-prd
-[cole PRD ou: leia docs/prd.md]
-
 /project-manager create-backlog
 /project-manager connect-github
 /project-manager create-github-issues
-
 /project-manager sprint-planning
 
 /implement-issue #110
@@ -236,53 +188,51 @@ Use babysit no PR #45
 
 ---
 
-## Labels criadas no GitHub
+## Comandos project-manager
+
+| Comando | Ação |
+|---------|------|
+| `/project-manager analyze-prd` | Analisa PRD |
+| `/project-manager create-backlog` | Gera backlog |
+| `/project-manager connect-github` | Valida repo + labels |
+| `/project-manager create-github-issues` | Cria issues |
+| `/project-manager sprint-planning` | Planeja sprint |
+| `/project-manager release-planning` | Planeja release |
+
+Comandos **implement-issue**: [implement-issue/README.md](implement-issue/README.md)
+
+---
+
+## Labels GitHub
 
 | Camada | Labels |
 |--------|--------|
-| **Tipo** | `epic`, `feature`, `task`, `bug`, `technical-debt` |
-| **Prioridade** | `high-priority`, `medium-priority`, `low-priority` |
-| **Estado** | `ready`, `blocked` |
-| **Módulo** | `auth`, `billing`, `notifications`, `admin`, `infra` |
+| Tipo | `epic`, `feature`, `task`, `bug`, `technical-debt` |
+| Prioridade | `high-priority`, `medium-priority`, `low-priority` |
+| Estado | `ready`, `blocked` |
+| Módulo | `auth`, `billing`, `notifications`, `admin`, `infra` |
 
 Catálogo: [`config/labels.json`](config/labels.json)
-
----
-
-## Scripts (uso manual)
-
-Na raiz do **seu projeto**:
-
-```bash
-SKILL=".cursor/skills/project-manager"
-
-bash "$SKILL/scripts/verify-github.sh"
-bash "$SKILL/scripts/bootstrap-labels.sh owner/repo"
-
-python3 "$SKILL/scripts/create-github-issues.py" \
-  --dry-run --manifest .project-manager/manifest.json
-
-python3 "$SKILL/scripts/create-github-issues.py" \
-  --manifest .project-manager/manifest.json
-```
-
----
-
-## GitHub MCP (alternativa ao `gh`)
-
-1. **Cursor Settings → MCP → Add server**
-2. Configure o servidor GitHub ([documentação MCP](https://cursor.com/docs/context/mcp))
-3. O skill detecta o MCP e cria issues com as mesmas labels
 
 ---
 
 ## Estrutura deste repositório
 
 ```
-├── SKILL.md
-├── README.md
-├── config/
+project-manager/
+├── SKILL.md                    # Skill de backlog
+├── README.md                   # Este arquivo
 ├── scripts/
+│   ├── install-skills.sh       # Registra ambas skills no Cursor
+│   ├── verify-github.sh
+│   ├── bootstrap-labels.sh
+│   └── create-github-issues.py
+├── implement-issue/            # Sub-skill de implementação
+│   ├── SKILL.md
+│   ├── README.md
+│   ├── workflows/
+│   └── scripts/
+├── config/
 ├── templates/
 ├── workflows/
 └── examples/
@@ -290,7 +240,7 @@ python3 "$SKILL/scripts/create-github-issues.py" \
 
 ---
 
-## Módulos SaaS detectados automaticamente
+## Módulos SaaS detectados
 
 Authentication · Authorization · User Management · Subscription · Billing · Payments · Stripe · Notifications · Audit Logs · Admin · Settings · Analytics · Reports · API · Security · Monitoring · Infrastructure · CI/CD
 
